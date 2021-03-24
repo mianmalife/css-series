@@ -14,7 +14,9 @@ class App extends Component {
   }
   render() {
     return <div className="App">
-      <div className="box">hello world</div>
+      <div className="box">
+        <span className="box__span">hello world</span>
+      </div>
       <div className={this.state.status ?'box__ease__out ease__status' :' box__ease__out'} onClick={this.clickBox}>hello transition</div>
     </div>
   }
