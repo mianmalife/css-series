@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import LeftRight from './left-right/index'
 import './App.less';
 class App extends Component {
   constructor(props) {
@@ -18,6 +19,7 @@ class App extends Component {
         <span className="box__span">hello world</span>
       </div>
       <div className={this.state.status ?'box__ease__out ease__status' :' box__ease__out'} onClick={this.clickBox}>hello transition</div>
+      <LeftRight></LeftRight>
     </div>
   }
 }

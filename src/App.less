@@ -1,7 +1,7 @@
 @import '~antd/dist/antd.less';
 .App {
-    height: 600px;
-    margin: 200px;
+    height: 1200px;
+    margin: 40px;
     .box {
         width: 100px;
         height: 100px;
@@ -18,13 +18,13 @@
             background-color: rgb(3, 3, 3);
             // opacity: 0.5;
             will-change: transform; // GPU加速
-            transition: transform 1s ease-out;
+            transition: transform 250ms ease-out;
             // transition-timing-function: 'linear';
             // transition-delay: 300ms;
         }
         &:hover .box__span {
-            transition: transform 1s;
-            transform: translateX(200px);
+            transition: transform 250ms;
+            transform: translateY(-20px);
             // opacity: 1;
         }
     }

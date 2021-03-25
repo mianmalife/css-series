@@ -1,0 +1,31 @@
+div {
+    margin: 20px;
+}
+.it {
+    display: inline-block;
+    border: solid #000;
+    border-width: 0px 2px 2px 0;
+    padding: 4px;
+}
+.left {
+    transform: rotate(-45deg);
+}
+.right {
+    transform: rotate(-45deg);
+}
+.top {
+    transform: rotate(225deg);
+    transition: transform 250ms ease-out;
+}
+.topdiv {
+    width: 20px;
+    height: 20px;
+    background: aquamarine;
+    text-align: center;
+}
+.topdiv:hover .top {
+    transform: rotate(405deg)
+}
+.bottom {
+    transform: rotate(45deg);
+}
