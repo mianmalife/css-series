@@ -114,6 +114,60 @@ export default class Get2d extends React.Component {
         quadCtx.arc(300, 300, 5, 0, Math.PI*2)
         quadCtx.fillStyle = 'red'
         quadCtx.fill()
+        let smiled = document.getElementById('smile')
+        let smileCtx = smiled.getContext('2d')
+        smileCtx.beginPath(200, 200)
+        smileCtx.arc(200, 200, 100, 0, Math.PI*2, false)
+        smileCtx.lineWidth = 10
+        smileCtx.fillStyle = '#ffdf00f2'
+        smileCtx.fill()
+        smileCtx.beginPath()
+        // smileCtx.arc(150, 160, 12, 0, Math.PI, true)
+        // smileCtx.strokeStyle = '#fff'
+        // smileCtx.stroke()
+        smileCtx.beginPath()
+        smileCtx.arc(150, 170, 10, 0, Math.PI*2, false)
+        smileCtx.fillStyle = '#000'
+        smileCtx.fill()
+        smileCtx.beginPath()
+        smileCtx.arc(140, 200, 8, 0, Math.PI*2, false)
+        smileCtx.fillStyle = 'pink'
+        smileCtx.fill()
+        // smileCtx.beginPath()
+        // smileCtx.arc(250, 160, 12, 0, Math.PI, true)
+        // smileCtx.strokeStyle = '#fff'
+        // smileCtx.stroke()
+        smileCtx.beginPath()
+        smileCtx.arc(250, 170, 10, 0, Math.PI*2, false)
+        smileCtx.fillStyle = '#000'
+        smileCtx.fill()
+        smileCtx.beginPath()
+        smileCtx.arc(260, 200, 8, 0, Math.PI*2, false)
+        smileCtx.fillStyle = 'pink'
+        smileCtx.fill()
+        smileCtx.beginPath()
+        smileCtx.arc(200, 220, 20, 0, Math.PI, false)
+        smileCtx.strokeStyle = '#000'
+        smileCtx.lineCap = 'round'
+        smileCtx.stroke()
+        let bezier = document.getElementById('bezier')
+        let bezierCtx = bezier.getContext('2d')
+        bezierCtx.beginPath()
+        bezierCtx.moveTo(200, 200)
+        bezierCtx.bezierCurveTo(300, 300, 300, 320, 100, 300)
+        bezierCtx.stroke()
+        bezierCtx.beginPath()
+        bezierCtx.rect(200, 200, 10, 10)
+        bezierCtx.fill()
+        bezierCtx.beginPath()
+        bezierCtx.rect(300, 300, 10, 10)
+        bezierCtx.fill()
+        bezierCtx.beginPath()
+        bezierCtx.rect(300, 320, 10, 10)
+        bezierCtx.fill()
+        bezierCtx.beginPath()
+        bezierCtx.rect(100, 300, 10, 10)
+        bezierCtx.fill()
     }
     render() {
         return <div className="canvas__Wrapper">
@@ -123,6 +177,8 @@ export default class Get2d extends React.Component {
             <canvas id="line" className="canvs" width="400" height="400"></canvas>
             <canvas id="circle" className="canvs" width="400" height="400"></canvas>
             <canvas id="quadr" className="canvs" width="400" height="400"></canvas>
+            <canvas id="smile" className="canvs" width="400" height="400"></canvas>
+            <canvas id="bezier" className="canvs" width="400" height="400"></canvas>
         </div>
     }
 }
