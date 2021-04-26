@@ -168,6 +168,61 @@ export default class Get2d extends React.Component {
         bezierCtx.beginPath()
         bezierCtx.rect(100, 300, 10, 10)
         bezierCtx.fill()
+        let imgContent = document.getElementById('imgCanvas')
+        let imgCanvas = imgContent.getContext('2d')
+        let imgObj = new Image()
+        imgObj.onload = function () {
+            imgCanvas.drawImage(imgObj, 20, 20)
+            imgCanvas.drawImage(imgObj, 20, 20, 100, 100)
+            imgCanvas.drawImage(imgObj, 40, 40, 100, 100)
+            imgCanvas.drawImage(imgObj, 60, 60, 100, 100)
+            imgCanvas.drawImage(imgObj, 80, 80, 100, 100)
+            imgCanvas.drawImage(imgObj, 100, 100, 100, 100)
+            // imgCanvas.drawImage(imgObj, 80, 80, 220, 220, 80, 80, 120, 120)
+        }
+        imgObj.src = 'https://avatars.githubusercontent.com/u/29158246?s=400&u=e3c281ce4a5522f287b0d0e39b61baa346330e92&v=4'
+        console.log(imgCanvas.getImageData(20, 20, 100, 100))
+        imgCanvas.beginPath()
+        imgCanvas.rect(18, 18, 366, 366)
+        imgCanvas.strokeStyle = 'pink'
+        imgCanvas.lineWidth = 4
+        imgCanvas.stroke()
+        let arcToCon = document.getElementById('arcTo')
+        let arcCtx = arcToCon.getContext('2d')
+        // arcCtx.beginPath()
+        // arcCtx.rect(200, 200, 5, 5)
+        // arcCtx.stroke()
+        // arcCtx.beginPath()
+        // arcCtx.rect(200, 80, 5, 5)
+        // arcCtx.stroke()
+        // arcCtx.beginPath()
+        arcCtx.setLineDash([])
+        // arcCtx.moveTo(200, 200)
+        // arcCtx.arcTo(200, 80, 140, 180, 30)
+        // arcCtx.stroke()
+        arcCtx.beginPath()
+        arcCtx.moveTo(250, 250)
+        arcCtx.arcTo(240, 120, 120, 240, 60)
+        arcCtx.strokeStyle = 'red'
+        arcCtx.stroke()
+        arcCtx.beginPath()
+        arcCtx.rect(240, 120, 5, 5)
+        arcCtx.fill()
+        arcCtx.beginPath()
+        arcCtx.setLineDash([3])
+        arcCtx.moveTo(240, 120)
+        arcCtx.lineTo(250, 250)
+        arcCtx.stroke()
+        arcCtx.beginPath()
+        arcCtx.moveTo(120, 240)
+        arcCtx.lineTo(240, 120)
+        arcCtx.stroke()
+        arcCtx.beginPath()
+        arcCtx.rect(120, 240, 5, 5)
+        arcCtx.fill()
+        arcCtx.beginPath()
+        arcCtx.arc(190, 250, 57, 0, Math.PI*2, false)
+        arcCtx.stroke()
     }
     render() {
         return <div className="canvas__Wrapper">
@@ -179,6 +234,8 @@ export default class Get2d extends React.Component {
             <canvas id="quadr" className="canvs" width="400" height="400"></canvas>
             <canvas id="smile" className="canvs" width="400" height="400"></canvas>
             <canvas id="bezier" className="canvs" width="400" height="400"></canvas>
+            <canvas id="imgCanvas" className="canvs" width="400" height="400"></canvas>
+            <canvas id="arcTo" className="canvs" width="400" height="400"></canvas>
         </div>
     }
 }
