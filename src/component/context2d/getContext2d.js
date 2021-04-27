@@ -1,10 +1,62 @@
-import React from 'react'
+import React, { Fragment } from 'react'
+import heatmap from 'heatmap.js'
+import imgCan from '../../8513281.jpg'
 import './index.less'
+// generate some random data
+var points = [];
+var max = 0;
+var min = 1234;
+var width = 840;
+var height = 400;
+var len = 200;
+
+while (len--) {
+  var val = Math.floor(Math.random()*1234);
+  max = Math.max(max, val);
+  min = Math.min(min, val);
+  var point = {
+    x: Math.floor(Math.random()*width),
+    y: Math.floor(Math.random()*height),
+    value: val
+  };
+  points.push(point);
+}
+var data = { max: max, min:min, data: points };
 export default class Get2d extends React.Component {
     constructor(props) {
         super(props)
+        this.imgDiv = React.createRef()
+        this.tooltips = React.createRef()
     }
-    componentDidMount () {
+    updateTooltip = (x, y, value) => {
+        console.log(x, y, val)
+        // + 15 for distance to cursor
+        let transl = 'translate(' + (x + 15) + 'px, ' + (y + 15) + 'px)'
+        this.tooltips.current.style.transform = transl
+        this.tooltips.current.innerHTML = value
+    }
+    move = ev => {
+        // console.log(ev, '888888')
+        let x = ev.layerX;
+        let y = ev.layerY;
+        // getValueAt gives us the value for a point p(x/y)
+        let value = window.heatmapInstance.getValueAt({
+            x: x,
+            y: y
+        });
+        this.tooltips.current.style.display = 'block';
+        this.updateTooltip(x, y, value);
+    }
+    out = (e) => {
+        this.tooltips.current.style.display = 'none';
+    }
+    componentDidMount() {
+        window.heatmapInstance = heatmap.create({
+            container: this.imgDiv.current
+        })
+        console.log(data, 'data')
+        window.heatmapInstance.setData(data);
+        this.imgDiv.current.addEventListener('mousemove', this.move, false)
         let canvas = document.getElementById('wrapper')
         let ctx = canvas.getContext('2d')
         ctx.font = '40px Segoe UI Symbol'
@@ -30,10 +82,10 @@ export default class Get2d extends React.Component {
         // ctx2d.fillText('前端搬砖工', 200, 200)
         ctx2d.strokeText(text, 200, 200)
         let measureText = ctx2d.measureText(text)
-        let width = measureText.width
+        let widtht = measureText.width
         ctx2d.font = '20px Segoe UI Symbol'
         ctx2d.fillStyle = '#fff'
-        ctx2d.fillText(`(${width})`, 200, 240)
+        ctx2d.fillText(`(${widtht})`, 200, 240)
         // 获取canvas画布
         let fontCanvas = document.getElementById('font')
         // 创建上下文 2d
@@ -90,12 +142,12 @@ export default class Get2d extends React.Component {
         let circleCanvas = document.getElementById('circle')
         let cirCtx = circleCanvas.getContext('2d')
         cirCtx.beginPath()
-        cirCtx.arc(200, 200, 100, 0, Math.PI*0.5, false)
+        cirCtx.arc(200, 200, 100, 0, Math.PI * 0.5, false)
         cirCtx.strokeStyle = '#fff'
         cirCtx.lineWidth = 8
         cirCtx.stroke()
         cirCtx.beginPath()
-        cirCtx.arc(200, 200, 100, Math.PI*1, Math.PI*1.5, false)
+        cirCtx.arc(200, 200, 100, Math.PI * 1, Math.PI * 1.5, false)
         cirCtx.strokeStyle = '#fff'
         cirCtx.stroke()
         let quadrCanvas = document.getElementById('quadr')
@@ -106,18 +158,18 @@ export default class Get2d extends React.Component {
         quadCtx.quadraticCurveTo(300, 300, 200, 300)
         quadCtx.stroke()
         quadCtx.beginPath()
-        quadCtx.arc(200, 200, 5, 0, Math.PI*2)
-        quadCtx.arc(200, 300, 5, 0, Math.PI*2)
+        quadCtx.arc(200, 200, 5, 0, Math.PI * 2)
+        quadCtx.arc(200, 300, 5, 0, Math.PI * 2)
         quadCtx.fillStyle = 'blue'
         quadCtx.fill()
         quadCtx.beginPath()
-        quadCtx.arc(300, 300, 5, 0, Math.PI*2)
+        quadCtx.arc(300, 300, 5, 0, Math.PI * 2)
         quadCtx.fillStyle = 'red'
         quadCtx.fill()
         let smiled = document.getElementById('smile')
         let smileCtx = smiled.getContext('2d')
         smileCtx.beginPath(200, 200)
-        smileCtx.arc(200, 200, 100, 0, Math.PI*2, false)
+        smileCtx.arc(200, 200, 100, 0, Math.PI * 2, false)
         smileCtx.lineWidth = 10
         smileCtx.fillStyle = '#ffdf00f2'
         smileCtx.fill()
@@ -126,11 +178,11 @@ export default class Get2d extends React.Component {
         // smileCtx.strokeStyle = '#fff'
         // smileCtx.stroke()
         smileCtx.beginPath()
-        smileCtx.arc(150, 170, 10, 0, Math.PI*2, false)
+        smileCtx.arc(150, 170, 10, 0, Math.PI * 2, false)
         smileCtx.fillStyle = '#000'
         smileCtx.fill()
         smileCtx.beginPath()
-        smileCtx.arc(140, 200, 8, 0, Math.PI*2, false)
+        smileCtx.arc(140, 200, 8, 0, Math.PI * 2, false)
         smileCtx.fillStyle = 'pink'
         smileCtx.fill()
         // smileCtx.beginPath()
@@ -138,11 +190,11 @@ export default class Get2d extends React.Component {
         // smileCtx.strokeStyle = '#fff'
         // smileCtx.stroke()
         smileCtx.beginPath()
-        smileCtx.arc(250, 170, 10, 0, Math.PI*2, false)
+        smileCtx.arc(250, 170, 10, 0, Math.PI * 2, false)
         smileCtx.fillStyle = '#000'
         smileCtx.fill()
         smileCtx.beginPath()
-        smileCtx.arc(260, 200, 8, 0, Math.PI*2, false)
+        smileCtx.arc(260, 200, 8, 0, Math.PI * 2, false)
         smileCtx.fillStyle = 'pink'
         smileCtx.fill()
         smileCtx.beginPath()
@@ -221,21 +273,35 @@ export default class Get2d extends React.Component {
         arcCtx.rect(120, 240, 5, 5)
         arcCtx.fill()
         arcCtx.beginPath()
-        arcCtx.arc(190, 250, 57, 0, Math.PI*2, false)
+        arcCtx.arc(190, 250, 57, 0, Math.PI * 2, false)
         arcCtx.stroke()
+
+        let imgCon = document.getElementById('imgCanvas')
+        let ctxImg = imgCon.getContext('2d')
+        ctxImg.scale(0.5, 2)
     }
     render() {
-        return <div className="canvas__Wrapper">
-            <canvas id="wrapper" className="canvs" width="400" height="400"></canvas>
-            <canvas id="content" className="canvs"width="400" height="400"></canvas>
-            <canvas id="font" className="canvs" width="400" height="400"></canvas>
-            <canvas id="line" className="canvs" width="400" height="400"></canvas>
-            <canvas id="circle" className="canvs" width="400" height="400"></canvas>
-            <canvas id="quadr" className="canvs" width="400" height="400"></canvas>
-            <canvas id="smile" className="canvs" width="400" height="400"></canvas>
-            <canvas id="bezier" className="canvs" width="400" height="400"></canvas>
-            <canvas id="imgCanvas" className="canvs" width="400" height="400"></canvas>
-            <canvas id="arcTo" className="canvs" width="400" height="400"></canvas>
-        </div>
+        return <Fragment>
+            <div className="canvas__Wrapper">
+                <canvas id="wrapper" className="canvs" width="400" height="400"></canvas>
+                <canvas id="content" className="canvs" width="400" height="400"></canvas>
+                <canvas id="font" className="canvs" width="400" height="400"></canvas>
+                <canvas id="line" className="canvs" width="400" height="400"></canvas>
+                <canvas id="circle" className="canvs" width="400" height="400"></canvas>
+                <canvas id="quadr" className="canvs" width="400" height="400"></canvas>
+                <canvas id="smile" className="canvs" width="400" height="400"></canvas>
+                <canvas id="bezier" className="canvs" width="400" height="400"></canvas>
+                <canvas id="imgCanvas" className="canvs" width="400" height="400"></canvas>
+                <canvas id="arcTo" className="canvs" width="400" height="400"></canvas>
+            </div>
+            <div className="img__wrap">
+                <div
+                    onMouseOut={this.out}
+                    ref={this.imgDiv} className="imgs"
+                    style={{ backgroundImage: `url(${imgCan})` }}>
+                    <div className="tootips" ref={this.tooltips}></div>
+                </div>
+            </div>
+        </Fragment>
     }
 }
