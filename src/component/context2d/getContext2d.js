@@ -3,33 +3,35 @@ import heatmap from 'heatmap.js'
 import imgCan from '../../8513281.jpg'
 import './index.less'
 // generate some random data
-var points = [];
-var max = 0;
-var min = 1234;
-var width = 840;
-var height = 400;
-var len = 200;
+let points = []
+let max = 0
+let min = 1234
+let width = 840
+let height = 400
+let len = 200
 
 while (len--) {
-  var val = Math.floor(Math.random()*1234);
-  max = Math.max(max, val);
-  min = Math.min(min, val);
-  var point = {
-    x: Math.floor(Math.random()*width),
-    y: Math.floor(Math.random()*height),
-    value: val
-  };
-  points.push(point);
+    let val = Math.floor(Math.random() * 1234)
+    max = Math.max(max, val)
+    min = Math.min(min, val)
+    let point = {
+        x: Math.floor(Math.random() * width),
+        y: Math.floor(Math.random() * height),
+        value: val
+    }
+    points.push(point)
 }
-var data = { max: max, min:min, data: points };
+let data = { max: max, min: min, data: points }
 export default class Get2d extends React.Component {
     constructor(props) {
         super(props)
         this.imgDiv = React.createRef()
         this.tooltips = React.createRef()
+        this.gradient = React.createRef()
+        this.min = React.createRef()
+        this.max = React.createRef()
     }
     updateTooltip = (x, y, value) => {
-        console.log(x, y, val)
         // + 15 for distance to cursor
         let transl = 'translate(' + (x + 15) + 'px, ' + (y + 15) + 'px)'
         this.tooltips.current.style.transform = transl
@@ -37,25 +39,62 @@ export default class Get2d extends React.Component {
     }
     move = ev => {
         // console.log(ev, '888888')
-        let x = ev.layerX;
-        let y = ev.layerY;
+        let x = ev.layerX
+        let y = ev.layerY
         // getValueAt gives us the value for a point p(x/y)
         let value = window.heatmapInstance.getValueAt({
             x: x,
             y: y
-        });
-        this.tooltips.current.style.display = 'block';
-        this.updateTooltip(x, y, value);
+        })
+        this.tooltips.current.style.display = 'block'
+        this.updateTooltip(x, y, value)
     }
     out = (e) => {
-        this.tooltips.current.style.display = 'none';
+        this.tooltips.current.style.display = 'none'
+    }
+    updateLegend = (data) => {
+        console.log(data, '1')
+        /*  start legend code */
+        // we want to display the gradient, so we have to draw it
+        let legendCanvas = document.createElement('canvas')
+        legendCanvas.width = 100
+        legendCanvas.height = 10
+        let legendCtx = legendCanvas.getContext('2d')
+        let gradientCfg = {}
+        // the onExtremaChange callback gives us min, max, and the gradientConfig
+        // so we can update the legend
+        this.min.current.innerHTML = data.min
+        this.max.current.innerHTML = data.max
+        // regenerate gradient image
+        if (data.gradient != gradientCfg) {
+            console.log(data.gradient, gradientCfg, '2')
+            gradientCfg = data.gradient
+            // 创建一个根据指定线路初始化的线性对象
+            let gradient = legendCtx.createLinearGradient(0, 0, 100, 1)
+            console.log(gradient, '3')
+            for (let key in gradientCfg) {
+                // CanvasGradient.addColorStop() 方法添加一个由偏移值和颜色值指定的断点到渐变。
+                // 如果偏移值不在0到1之间，
+                // 将抛出INDEX_SIZE_ERR错误，
+                // 如果颜色值不能被解析为有效的CSS颜色值 <color>，将抛出SYNTAX_ERR错误。
+                gradient.addColorStop(key, gradientCfg[key])
+            }
+            legendCtx.fillStyle = gradient
+            legendCtx.fillRect(0, 0, 100, 10)
+            console.log(legendCanvas.toDataURL())
+            this.gradient.current.src = legendCanvas.toDataURL()
+        }
     }
     componentDidMount() {
+        let that = this
         window.heatmapInstance = heatmap.create({
-            container: this.imgDiv.current
+            container: this.imgDiv.current,
+            onExtremaChange: function (data) {
+                that.updateLegend(data)
+            }
         })
         console.log(data, 'data')
-        window.heatmapInstance.setData(data);
+        window.heatmapInstance.setData(data)
         this.imgDiv.current.addEventListener('mousemove', this.move, false)
         let canvas = document.getElementById('wrapper')
         let ctx = canvas.getContext('2d')
@@ -224,12 +263,12 @@ export default class Get2d extends React.Component {
         let imgCanvas = imgContent.getContext('2d')
         let imgObj = new Image()
         imgObj.onload = function () {
-            imgCanvas.drawImage(imgObj, 20, 20)
-            imgCanvas.drawImage(imgObj, 20, 20, 100, 100)
-            imgCanvas.drawImage(imgObj, 40, 40, 100, 100)
-            imgCanvas.drawImage(imgObj, 60, 60, 100, 100)
-            imgCanvas.drawImage(imgObj, 80, 80, 100, 100)
-            imgCanvas.drawImage(imgObj, 100, 100, 100, 100)
+            imgCanvas.drawImage(imgObj, 0, 0)
+            // imgCanvas.drawImage(imgObj, 20, 20, 100, 100)
+            // imgCanvas.drawImage(imgObj, 40, 40, 100, 100)
+            // imgCanvas.drawImage(imgObj, 60, 60, 100, 100)
+            // imgCanvas.drawImage(imgObj, 80, 80, 100, 100)
+            // imgCanvas.drawImage(imgObj, 100, 100, 100, 100)
             // imgCanvas.drawImage(imgObj, 80, 80, 220, 220, 80, 80, 120, 120)
         }
         imgObj.src = 'https://avatars.githubusercontent.com/u/29158246?s=400&u=e3c281ce4a5522f287b0d0e39b61baa346330e92&v=4'
@@ -276,9 +315,9 @@ export default class Get2d extends React.Component {
         arcCtx.arc(190, 250, 57, 0, Math.PI * 2, false)
         arcCtx.stroke()
 
-        let imgCon = document.getElementById('imgCanvas')
-        let ctxImg = imgCon.getContext('2d')
-        ctxImg.scale(0.5, 2)
+        // let imgCon = document.getElementById('imgCanvas')
+        // let ctxImg = imgCon.getContext('2d')
+        // ctxImg.scale(0.5, 2)
     }
     render() {
         return <Fragment>
@@ -300,6 +339,13 @@ export default class Get2d extends React.Component {
                     ref={this.imgDiv} className="imgs"
                     style={{ backgroundImage: `url(${imgCan})` }}>
                     <div className="tootips" ref={this.tooltips}></div>
+                    <div className="legend-area">
+                        <h4>Legend Title</h4>
+                        <span ref={this.min}></span>
+                        <span ref={this.max}></span>
+                        <img ref={this.gradient}
+                            src="" style={{ width: '100%' }} />
+                    </div>
                 </div>
             </div>
         </Fragment>
