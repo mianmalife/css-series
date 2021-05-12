@@ -86,16 +86,16 @@ export default class Get2d extends React.Component {
         }
     }
     componentDidMount() {
-        let that = this
-        window.heatmapInstance = heatmap.create({
-            container: this.imgDiv.current,
-            onExtremaChange: function (data) {
-                that.updateLegend(data)
-            }
-        })
-        console.log(data, 'data')
-        window.heatmapInstance.setData(data)
-        this.imgDiv.current.addEventListener('mousemove', this.move, false)
+        // let that = this
+        // window.heatmapInstance = heatmap.create({
+        //     container: this.imgDiv.current,
+        //     onExtremaChange: function (data) {
+        //         that.updateLegend(data)
+        //     }
+        // })
+        // console.log(data, 'data')
+        // window.heatmapInstance.setData(data)
+        // this.imgDiv.current.addEventListener('mousemove', this.move, false)
         let canvas = document.getElementById('wrapper')
         let ctx = canvas.getContext('2d')
         ctx.font = '40px Segoe UI Symbol'
@@ -318,6 +318,32 @@ export default class Get2d extends React.Component {
         // let imgCon = document.getElementById('imgCanvas')
         // let ctxImg = imgCon.getContext('2d')
         // ctxImg.scale(0.5, 2)
+        const dataLine = [2, 3, 14, 6, 7, 10]
+        let chartLine =  document.getElementById('chartLine')
+        let chartCtx = chartLine.getContext('2d')
+        chartCtx.fillStyle = 'blue'
+        dataLine.forEach((item, index) => {
+            chartCtx.fillRect(40 + index * 60, 400 - item*10 - 30, 20, item*10)
+        })
+        chartCtx.beginPath()
+        chartCtx.strokeStyle = '#000'
+        chartCtx.moveTo(35, 10)
+        chartCtx.lineTo(35, 370)
+        chartCtx.lineTo(390, 370)
+        chartCtx.stroke()
+        chartCtx.fillStyle = '#000'
+        for(let i = 0; i < 6; i++) {
+            chartCtx.fillText((5 - i) * 30 + '', 10, 67*i + 35)
+            chartCtx.beginPath()
+            chartCtx.moveTo(30,  67*i + 35)
+            chartCtx.lineTo(35,  67*i + 35)
+            chartCtx.stroke()
+        }
+        const labels = ['周一', '周二', '周三', '周四', '周五', '周六']
+        labels.forEach((item, index) => {
+            chartCtx.fillText(item, 40 + index * 60, 380)
+
+        })
     }
     render() {
         return <Fragment>
@@ -332,8 +358,9 @@ export default class Get2d extends React.Component {
                 <canvas id="bezier" className="canvs" width="400" height="400"></canvas>
                 <canvas id="imgCanvas" className="canvs" width="400" height="400"></canvas>
                 <canvas id="arcTo" className="canvs" width="400" height="400"></canvas>
+                <canvas id="chartLine" className="canvas" width="400" height="400"></canvas>
             </div>
-            <div className="img__wrap">
+            {/* <div className="img__wrap">
                 <div
                     onMouseOut={this.out}
                     ref={this.imgDiv} className="imgs"
@@ -347,7 +374,7 @@ export default class Get2d extends React.Component {
                             src="" style={{ width: '100%' }} />
                     </div>
                 </div>
-            </div>
+            </div> */}
         </Fragment>
     }
 }
